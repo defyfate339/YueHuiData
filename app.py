@@ -128,7 +128,7 @@ def map_channel(v) -> str:
 
 
 # ============ 5. 数据加载 ============
-DEFAULT_PATH = r"D:\YueHuiProject\公司数据\在离职数据与模板\最新状态.xlsx"
+DEFAULT_PATH = r"在离职数据与模板\最新状态.xlsx"
 
 try:
     df = pd.read_excel(DEFAULT_PATH)
