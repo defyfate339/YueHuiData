@@ -128,7 +128,7 @@ def map_channel(v) -> str:
 
 
 # ============ 5. 数据加载 ============
-DEFAULT_PATH = r"最新状态.xlsx"
+DEFAULT_PATH = r"D:\YueHuiProject\公司数据\在离职数据与模板\最新状态.xlsx"
 
 try:
     df = pd.read_excel(DEFAULT_PATH)
@@ -177,6 +177,18 @@ result = result[[col_channel, "负责人", "到面", "合格", "在职"]]
 
 st.subheader("汇总数据")
 st.dataframe(result, width="stretch")
+
+# ============ 6b. 转化率小卡片（放在汇总数据下方） ============
+total_arrived = int(result["到面"].sum())
+total_qualified = int(result["合格"].sum())
+total_onboard = int(result["在职"].sum())
+
+c1, c2, c3 = st.columns(3)
+c1.metric("到面总人数", total_arrived)
+c2.metric("合格总人数", total_qualified,
+          f"{total_qualified / total_arrived * 100:.1f}%" if total_arrived else "—")
+c3.metric("在职总人数", total_onboard,
+          f"{total_onboard / total_arrived * 100:.1f}%" if total_arrived else "—")
 
 # ============ 7. 旭日图：到面数据（负责人 → 渠道） ============
 st.subheader("到面数据分布")
@@ -456,16 +468,3 @@ else:
         # 附一张小汇总表，方便核对
         with st.expander(f"查看 {selected_company} 各渠道明细"):
             st.dataframe(channel_stat, width="stretch")
-
-# ============ 11. 转化率小卡片 ============
-st.subheader("转化率概览")
-total_arrived = int(result["到面"].sum())
-total_qualified = int(result["合格"].sum())
-total_onboard = int(result["在职"].sum())
-
-c1, c2, c3 = st.columns(3)
-c1.metric("到面总人数", total_arrived)
-c2.metric("合格总人数", total_qualified,
-          f"{total_qualified / total_arrived * 100:.1f}%" if total_arrived else "—")
-c3.metric("在职总人数", total_onboard,
-          f"{total_onboard / total_arrived * 100:.1f}%" if total_arrived else "—")
